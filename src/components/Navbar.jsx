@@ -5,9 +5,10 @@ import { AuthContext } from "../Providers/AuthProvider";
 const Navbar = () => {
 
        // for use Context.start.>
-   const authInfo = useContext
-   
-    // for use Context.start.>
+     const {user} = useContext(AuthContext);
+     console.log(user);
+     
+      // for use Context.start.>
    
    
    (AuthContext)
@@ -56,7 +57,7 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        <a className="btn">{user?.email}</a>
       </div>
     </div>
   );
