@@ -1,6 +1,7 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import React, { createContext, useEffect, useState } from 'react';
 import { auth } from '../firbase.init';
+
 
 export const AuthContext = createContext(null);
 
@@ -14,19 +15,47 @@ const AuthProvider = ({children}) => {
 
      const [user,steUser] = useState(null);
 
+       //stop reload thamoner jonno stp 1 start>
+     const [loading,setLoading]= useState(true);
+
+      //stop reload thamoner jonno stp 1 end>
+
 
       //useEffect set objarber state set krtbo part 2 end>
 
    //password based account stp 1 start>
  const createUser = (email,password)=>{
+
+  //stop loading page 3 step 
+    setLoading(true);
+  //stop loading page 2 step 
     return createUserWithEmailAndPassword(auth,email,password)
  }
+
+ //signOut or LogOut start>
+  const signOutUser =()=>{
+
+     //stop loading page 3 step 
+     setLoading(true);
+     //stop loading page 2 step 
+
+    return signOut(auth);
+  }
+ //signOut or LogOut end>
+
+
+
 //password based account stp 1 end>
 
 
  //sign in user with an email address and password step 1 start >
   const signInUser =(email,password) =>{
-    return signInWithEmailAndPassword(auth,email,password)
+
+     //stop loading page 3 step 
+     setLoading(true);
+     //stop loading page 2 step 
+
+    return signInWithEmailAndPassword(auth,email,password);
   }
 
  // setting an observer on the Auth object start from fire base>
@@ -34,6 +63,9 @@ const AuthProvider = ({children}) => {
  const unSubscribe = onAuthStateChanged(auth,currentUser =>{
         console.log('current User',currentUser);
         steUser(currentUser);
+        //stop loading page 2 step 
+        setLoading(false);
+        //stop loading page 2 step 
     })
 
    return ()=>{
@@ -42,36 +74,11 @@ const AuthProvider = ({children}) => {
 
   },[])
 
-  // setting an observer on the Auth object start from fire base>
-
-     //sign in user with an email address and password step 1 end >
-
-     //useEffect set objarber set krtbo part 1 start>
-    //  onAuthStateChanged(auth,currentUser =>{
-    //     if(currentUser){
-    //         console.log('current logged user',currentUser);
-    //          // set from stat
-    //         steUser(currentUser)
-           
-            
-           
-    //     }
-    //     else{
-    //         console.log('no user logged in');
-    //          // set from stat
-    //        steUser(null)
-    //         // set from stat
-    //     }
-    //  })
-
-    //  //useEffect set objarber set kotbo part 1 end>
-
-
-
-
     const authInfo ={
         name,
         user,
+        loading,
+        
 
            //password based account stp 2 start>
            createUser,
@@ -80,6 +87,10 @@ const AuthProvider = ({children}) => {
            //sign in user with an email address and password step 2 start >
           signInUser,
            //sign in user with an email address and password step 1 end >
+
+           //sing out sta 2
+           signOutUser
+            //sing out sta 2 
      }
 
     return (
