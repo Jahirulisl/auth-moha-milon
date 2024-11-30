@@ -1,12 +1,15 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth';
 import React, { createContext, useEffect, useState } from 'react';
 import { auth } from '../firbase.init';
 
 
 export const AuthContext = createContext(null);
 
-//value ta nam dabr jonno amra akta nam nilam
+ //value ta nam dabr jonno amra akta nam nilam
 
+ //social looging 2 stp start
+   const googleProvider = new  GoogleAuthProvider();
+ //social login 2 stp start
 
 const AuthProvider = ({children}) => {
     const name ='potato alu mia';
@@ -43,6 +46,11 @@ const AuthProvider = ({children}) => {
   }
  //signOut or LogOut end>
 
+ //social login start
+ const signInWithGoogle =() =>{
+   return signInWithPopup(auth,googleProvider);
+ }
+ //social login end
 
 
 //password based account stp 1 end>
@@ -78,7 +86,9 @@ const AuthProvider = ({children}) => {
         name,
         user,
         loading,
-        
+          //social login 3 stp start
+          signInWithGoogle,
+          //social login 3 stp end
 
            //password based account stp 2 start>
            createUser,

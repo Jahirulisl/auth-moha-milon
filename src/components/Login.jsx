@@ -1,10 +1,13 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Providers/AuthProvider";
 
 const Login = () => {
+
+  //Home page a jabar jonno
+  const navigate = useNavigate();
   //sign in user with an email address and password step from authProvider start 1stp >
-  const { signInUser } = useContext(AuthContext);
+  const { signInUser,signInWithGoogle } = useContext(AuthContext);
 
   //sign in user with an email address and password step1 from authProvider start >
 
@@ -19,11 +22,23 @@ const Login = () => {
     signInUser(email, password)
       .then((result) => {
         console.log(result.user);
+        e.target.reset();
+        navigate('/');
       })
       .catch((error) => {
         console.log("ERROR", error.message);
-      });
-  };
+      })
+  }
+
+  const handleGoogleSignIn = () =>{
+    signInWithGoogle()
+    .then(result =>{
+      console.log(result.user);
+    navigate('/');
+      
+    })
+    .catch(error =>console.log('ERROR',error.message))
+  }
   return (
     <div className="hero bg-base-200 min-h-screen">
       <div className="hero-content flex-col ">
@@ -64,10 +79,15 @@ const Login = () => {
             <div className="form-control mt-6">
               <button className="btn btn-primary">Login</button>
             </div>
-            <p>
+          </form>
+          <p>
               new to this website? please<Link to="/register">Register</Link>
             </p>
-          </form>
+            
+            {/* social login stp 1 start */}
+            <p>
+              <button onClick={handleGoogleSignIn} className="btn btn-ghost">Google</button>
+            </p>
         </div>
       </div>
     </div>
